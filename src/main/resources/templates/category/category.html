@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:insert="fragments/navbar::navbar(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<section>
+    <h2 style="margin-left: 300px">Category Details</h2>
+    <hr/>
+    <div class="row" style="margin-left: 70px">
+        <div class="col-md-6">
+            <h4 style="text-align: center">Create details</h4>
+            <hr/>
+            <form th:action="@{~/category/create}" th:method="post" th:object="${categoryDto}">
+                <div class="mb-3">
+                    <label for="categoryName" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="categoryName" th:field="*{name}" placeholder="Book name"
+                           aria-describedby="emailHelp">
+                </div>
+
+                <div class="mb-3">
+                    <label for="categoryDescription" class="form-label">Description</label>
+                    <textarea type="text" class="form-control" th:field="*{description}" id="categoryDescription"
+                              placeholder="Description"></textarea>
+                </div>
+
+                <button type="reset" class="btn btn-danger">Reset</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <p th:text="${message}"></p>
+
+        </div>
+        <div class="col-md-6">
+            <h4 style="text-align: center">Details</h4>
+            <hr/>
+            <table class="table" style="margin-left: 10px">
+                <thead>
+                <tr>
+                    <th scope="col">S.N</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="i ,loop:  ${data}">
+                    <th scope="row" th:text="${loop.count}"></th>
+                    <td th:text="${i.name}"></td>
+                    <th:block>
+                        <div  style="color:red;">
+                            <td th:text="${i.description}"></td>
+                        </div>
+                    </th:block>
+
+                    <td>
+                        <a th:href="@{~/category/delete/}+${i.getId()}">
+                            <img src="" alt="" th:src="@{/images/bin.png}" style="height: 27px;width: 27px;">
+                        </a>
+                        <a th:href="@{~/category/view/}+${i.getId()}">
+                            <img src="" alt="" th:src="@{/images/edit.png}" style="height: 27px;width: 27px;">
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+</body>
+</html>

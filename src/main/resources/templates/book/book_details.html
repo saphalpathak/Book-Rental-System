@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:insert="fragments/navbar::navbar(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<section>
+    <a th:href="@{/book/home}"><button class="btn btn-primary">Back</button></a>
+    <h1 style="text-align: center">Book Details</h1>
+    <hr/>
+    <div class="row" style="margin-left: 70px">
+        <div class="col-md-5">
+            <img th:src="${bookData.getFilePath()}" alt="" src="" height="370px" width="370px">
+        </div>
+        <div class="col-md-7">
+            <ul class="view">
+                <div>
+                    <th:block>
+                        <li th:text="'Name:   ' + ${bookData.name}" class="item"></li>
+                        <li th:text="'No. of Page:   ' + ${bookData.noOfPage}" class="item"></li>
+                        <li th:text="'Isbn:   ' + ${bookData.isbn}" class="item"></li>
+                        <li th:text="'Rating:   ' + ${bookData.rating}" class="item"></li>
+                        <li th:text="'Stock:   ' + ${bookData.stockCount}" class="item"></li>
+                        <li th:text="'Published Date:   ' + ${bookData.publishedDate}" class="item"></li>
+                        <hr/>
+                    </th:block>
+                </div>
+                <div style="inline-size: auto;overflow-wrap: break-word;">
+                    <th:block>
+                        <h3>Category</h3>
+                        <li th:text="'Category Name:   ' + ${categoryData.name}" class="item"></li>
+                        <li th:text="'Category Description:  ' + ${categoryData.description}" class="item"></li>
+                        <hr/>
+                    </th:block>
+                </div>
+                <div>
+                    <h3>Authors</h3>
+                    <th:block th:each = "author : ${authorData}">
+                        <li th:text="'Author Name:   ' + ${author.name}" class="item"></li>
+                        <li th:text="'Author Email:   ' + ${author.email}" class="item"></li>
+                        <li th:text="'Author Contact:   ' + ${author.contact}" class="item"></li>
+                        <hr/>
+                    </th:block>
+                </div>
+            </ul>
+        </div>
+    </div>
+</section>
+</body>
+</html>

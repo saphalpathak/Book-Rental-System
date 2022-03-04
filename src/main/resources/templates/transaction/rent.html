@@ -1,0 +1,53 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" th:insert="fragments/navbar::navbar(~{::section})">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Home</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<section>-->
+<!--    <h2 style="margin-left: 300px">Member Details</h2>-->
+<!--    <hr/>-->
+<!--            <h4 style="text-align: center">Create details</h4>-->
+<!--            <hr/>-->
+<!--            <form th:action="@{~/rent/create}" th:method="post" th:object="${transactionDto}">-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="bookCode" class="form-label">Name</label>-->
+<!--                    <input type="text" class="form-control" id="bookCode" th:field="*{code}" placeholder="Code">-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="noOfDays" class="form-label">Email</label>-->
+<!--                    <input type="email" class="form-control" th:field="*{noOfDays}" id="noOfDays" placeholder="No of days">-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="memberContact" class="form-label">Contact</label>-->
+<!--                    <input type="text" class="form-control" th:field="*{contact}" id="memberContact"-->
+<!--                           placeholder="Contact Number">-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="bookData" class="form-label">Author</label>-->
+<!--                    <div class="col-sm-8">-->
+<!--                        <select th:field="*{book}" class="form-label" id="bookData" multiple required>-->
+<!--                            <th:block th:each="book : ${bookData}">-->
+<!--                                <option th:text="${book.getName()}" th:value="${book.getId()}"></option>-->
+<!--                            </th:block>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="mb-3">-->
+<!--                    <label for="memberData" class="form-label">Author</label>-->
+<!--                    <div class="col-sm-8">-->
+<!--                        <select th:field="*{member}" class="form-label" id="memberData" multiple required>-->
+<!--                            <th:block th:each="mem : ${memberData}">-->
+<!--                                <option th:text="${mem.getName()}" th:value="${mem.getMid()}"></option>-->
+<!--                            </th:block>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <button type="reset" class="btn btn-danger">Reset</button>-->
+<!--                <button type="submit" class="btn btn-primary">Submit</button>-->
+<!--            </form>-->
+<!--            <p th:text="${message}"></p>-->
+<!--</section>-->
+<!--</body>-->
+<!--</html>-->
