@@ -18,6 +18,7 @@ public class EmailComponent {
             email.setMsg(message);
             email.addTo(receiver);
             email.send();
+            System.out.println("Sent");
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("Failed");
