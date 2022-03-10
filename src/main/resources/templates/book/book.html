@@ -82,10 +82,10 @@
                 <tr>
                     <th scope="col">S.N</th>
                     <th scope="col">Name</th>
-                    <th scope="col">noOfPage</th>
-                    <th scope="col">isbn</th>
-                    <th scope="col">rating</th>
-                    <th scope="col">stockCount</th>
+                    <th scope="col">No Of Page</th>
+                    <th scope="col">Isbn</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Stock</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
@@ -96,7 +96,7 @@
                     <td th:text="${i.noOfPage}"></td>
                     <td th:text="${i.isbn}"></td>
                     <td th:text="${i.rating}"></td>
-                    <td th:text="${i.getTotalStock}"></td>
+                    <td th:text="${i.getRemainingBook()}"></td>
                     <td>
                         <a th:href="@{~/book/view/}+${i.getId()}">
                             <img src="" alt="" th:src="@{/images/view.png}" style="height: 27px;width: 27px;">

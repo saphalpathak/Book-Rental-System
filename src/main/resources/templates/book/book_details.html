@@ -22,7 +22,7 @@
                         <li th:text="'Isbn:   ' + ${bookData.isbn}" class="item"></li>
                         <li th:text="'Rating:   ' + ${bookData.rating}" class="item"></li>
                         <li th:text="'Stock:   ' + ${bookData.getTotalStock}" class="item"></li>
-                        <li th:text="'Stock:   ' + ${bookData.getRemainingBook()}" class="item"></li>
+                        <li th:text="'Remaining Stock:   ' + ${bookData.getRemainingBook()}" class="item"></li>
                         <li th:text="'Published Date:   ' + ${bookData.publishedDate}" class="item"></li>
                         <hr/>
                     </th:block>

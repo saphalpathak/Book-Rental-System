@@ -60,7 +60,8 @@ public class TransactionImpl{
         Transaction transaction1=null;
         for(Transaction transaction : all){
             if(Objects.equals(transaction.getCode(), returnDto.getCode()) &&
-                    Objects.equals(transaction.getMember().getMid(),returnDto.getMember().getMid())){
+                    Objects.equals(transaction.getMember().getMid(),returnDto.getMember().getMid())&&
+            transaction.getRentStatus()==RentStatus.RENT){
                 transaction1 = transaction;
                 break;
             }
