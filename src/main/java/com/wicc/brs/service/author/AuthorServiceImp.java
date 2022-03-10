@@ -3,6 +3,7 @@ package com.wicc.brs.service.author;
 import com.wicc.brs.dto.AuthorDto;
 import com.wicc.brs.entity.Author;
 import com.wicc.brs.repo.AuthorRepo;
+import com.wicc.brs.component.EmailComponent;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.stream.Collectors;
 public class AuthorServiceImp implements AuthorService{
 
     private final AuthorRepo authorRepo;
+    private final EmailComponent emailComponent;
 
-    public AuthorServiceImp(AuthorRepo authorRepo) {
+    public AuthorServiceImp(AuthorRepo authorRepo, EmailComponent emailComponent) {
         this.authorRepo = authorRepo;
+        this.emailComponent = emailComponent;
     }
 
     @Override
@@ -27,6 +30,9 @@ public class AuthorServiceImp implements AuthorService{
                 .contact(authorDto.getContact())
                 .build();
         author= authorRepo.save(author);
+        emailComponent.send(author.getEmail(),
+                "Added to Book Rental System as a author.",
+                "You are added as a author in Book Rental System");
         return AuthorDto.builder().id(author.getId()).build();
 
     }
