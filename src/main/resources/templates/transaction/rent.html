@@ -1,53 +1,81 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en" xmlns:th="http://www.thymeleaf.org" th:insert="fragments/navbar::navbar(~{::section})">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Home</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<section>-->
-<!--    <h2 style="margin-left: 300px">Member Details</h2>-->
-<!--    <hr/>-->
-<!--            <h4 style="text-align: center">Create details</h4>-->
-<!--            <hr/>-->
-<!--            <form th:action="@{~/rent/create}" th:method="post" th:object="${transactionDto}">-->
-<!--                <div class="mb-3">-->
-<!--                    <label for="bookCode" class="form-label">Name</label>-->
-<!--                    <input type="text" class="form-control" id="bookCode" th:field="*{code}" placeholder="Code">-->
-<!--                </div>-->
-<!--                <div class="mb-3">-->
-<!--                    <label for="noOfDays" class="form-label">Email</label>-->
-<!--                    <input type="email" class="form-control" th:field="*{noOfDays}" id="noOfDays" placeholder="No of days">-->
-<!--                </div>-->
-<!--                <div class="mb-3">-->
-<!--                    <label for="memberContact" class="form-label">Contact</label>-->
-<!--                    <input type="text" class="form-control" th:field="*{contact}" id="memberContact"-->
-<!--                           placeholder="Contact Number">-->
-<!--                </div>-->
-<!--                <div class="mb-3">-->
-<!--                    <label for="bookData" class="form-label">Author</label>-->
-<!--                    <div class="col-sm-8">-->
-<!--                        <select th:field="*{book}" class="form-label" id="bookData" multiple required>-->
-<!--                            <th:block th:each="book : ${bookData}">-->
-<!--                                <option th:text="${book.getName()}" th:value="${book.getId()}"></option>-->
-<!--                            </th:block>-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="mb-3">-->
-<!--                    <label for="memberData" class="form-label">Author</label>-->
-<!--                    <div class="col-sm-8">-->
-<!--                        <select th:field="*{member}" class="form-label" id="memberData" multiple required>-->
-<!--                            <th:block th:each="mem : ${memberData}">-->
-<!--                                <option th:text="${mem.getName()}" th:value="${mem.getMid()}"></option>-->
-<!--                            </th:block>-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <button type="reset" class="btn btn-danger">Reset</button>-->
-<!--                <button type="submit" class="btn btn-primary">Submit</button>-->
-<!--            </form>-->
-<!--            <p th:text="${message}"></p>-->
-<!--</section>-->
-<!--</body>-->
-<!--</html>-->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:insert="fragments/navbar::navbar(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<section>
+    <h2 style="margin-left: 300px">Rent Book</h2>
+    <div style="margin-left: 70px">
+        <hr/>
+        <div class="row" style="margin-left: 70px">
+            <div class="col-md-5" style="align-content: start">
+                <h4  style="align-content: center">Rent</h4>
+                <hr/>
+                <form th:action="@{~/rent/create}" th:method="post" th:object="${rentDto}">
+                    <div class="mb-3">
+                        <label for="bookCode" class="form-label">Code</label>
+                        <input type="text" class="form-control" id="bookCode" th:field="*{code}" placeholder="Code">
+                    </div>
+                    <div class="mb-3">
+                        <label for="noOfDays" class="form-label">No of days</label>
+                        <input type="text" class="form-control" th:field="*{noOfDays}" id="noOfDays"
+                               placeholder="No of days">
+                    </div>
+                    <div class="mb-3">
+                        <label for="bookData" class="form-label">Book</label>
+                        <div class="col-sm-8">
+                            <select th:field="*{book}" class="form-label" id="bookData" required>
+                                <th:block th:each="book : ${bookData}">
+                                    <option th:text="${book.getName()}" th:value="${book.getId()}"></option>
+                                </th:block>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="memberData" class="form-label">Member</label>
+                        <div class="col-sm-8">
+                            <select th:field="*{member}" class="form-label" id="memberData" required>
+                                <th:block th:each="mem : ${memberData}">
+                                    <option th:text="${mem.getName()}" th:value="${mem.getMid()}"></option>
+                                </th:block>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="reset" class="btn btn-danger">Reset</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+                <p th:text="${status}"></p>
+            </div>
+            <div class="col-md-6">
+                <h4 style="text-align: center">Rented Status</h4>
+                <hr/>
+                <table class="table" style="margin-left: 10px" >
+                    <thead>
+                    <tr>
+                        <th scope="col">S.N</th>
+                        <th scope="col">Book</th>
+                        <th scope="col">Code</th>
+                        <th scope="col" >Rented</th>
+                        <th scope="col">Return</th>
+                        <th scope="col" >Member</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="i ,loop:  ${rentData}">
+                            <th scope="row" th:text="${loop.count}"></th>
+                            <td th:text="${i.getBook().getName()}"></td>
+                            <td th:text="${i.getCode()}"></td>
+                            <td th:text="${#strings.substring(i.getFromDate(),0,10)}"></td>
+                            <td th:text="${#strings.substring(i.getToDate(),0,10)}"></td>
+                            <td th:text="${i.getMember().getName()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -1,4 +1,5 @@
 package com.wicc.brs.controller.book;
+
 import com.wicc.brs.dto.BookDto;
 import com.wicc.brs.service.author.AuthorService;
 import com.wicc.brs.service.book.BookService;
@@ -28,7 +29,7 @@ public class BookController {
         model.addAttribute("bookDto", new BookDto());
         model.addAttribute("data", bookService.findAll());
         model.addAttribute("categoryData", categoryService.findAll());
-        model.addAttribute("authorData",authorService.findAll());
+        model.addAttribute("authorData", authorService.findAll());
         return "/book/book";
     }
 
@@ -36,12 +37,11 @@ public class BookController {
     public String create(@ModelAttribute BookDto bookDto, RedirectAttributes redirectAttributes) {
         try {
             bookDto = bookService.save(bookDto);
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "Book creation failed");
-            return "redirect:/book/home";
-        }
-        if (bookDto != null) {
             redirectAttributes.addFlashAttribute("message", "Book created successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message", "Book creation failed");
         }
         return "redirect:/book/home";
     }
@@ -50,17 +50,40 @@ public class BookController {
     public String view(@PathVariable("id") Integer integer, Model model) throws IOException {
         model.addAttribute("bookData", bookService.findById(integer));
         model.addAttribute("categoryData", categoryService.findById(bookService.findById(integer).getCategory().getId()));
-        model.addAttribute("authorData",bookService.findById(integer).getAuthors());
+        model.addAttribute("authorData", bookService.findById(integer).getAuthors());
         return "/book/book_details";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer integer) {
-        bookService.deleteBYId(integer);
+    public String delete(@PathVariable Integer id) {
+        bookService.deleteBYId(id);
         return "redirect:/book/home";
     }
+
     @GetMapping("/back")
-    public String getHome(){
+    public String getHome() {
+        return "redirect:/book/home";
+    }
+
+
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable Integer id, Model model) throws IOException {
+        model.addAttribute("bookDto", bookService.findById(id));
+        model.addAttribute("categoryData", categoryService.findAll());
+        model.addAttribute("authorData", authorService.findAll());
+        return "book/book_update";
+    }
+
+    @PostMapping("/update")
+    public String update(BookDto bookDto, RedirectAttributes redirectAttributes) {
+        try {
+            bookDto = bookService.update(bookDto);
+            redirectAttributes.addFlashAttribute("message", "Update successfully");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message", "Failed");
+        }
         return "redirect:/book/home";
     }
 }

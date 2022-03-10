@@ -20,7 +20,9 @@ public class AuthorController {
 
     @GetMapping("/home")
     public String homeAuthor(Model model){
-        model.addAttribute("authorDto",new AuthorDto());
+        if(model.getAttribute("authorDto") ==null) {
+            model.addAttribute("authorDto", new AuthorDto());
+        }
         model.addAttribute("data",authorServiceImp.findAll());
         return "/author/author";
     }
@@ -29,12 +31,10 @@ public class AuthorController {
     public String create( @ModelAttribute("authorDto") AuthorDto authorDto, RedirectAttributes redirectAttributes){
         try {
             authorDto = authorServiceImp.save(authorDto);
+            redirectAttributes.addFlashAttribute("message","Done");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message","Author creation failed");
-        }
-        if(authorDto!=null){
-            redirectAttributes.addFlashAttribute("message","Author created successfully");
+            redirectAttributes.addFlashAttribute("message","Failed");
         }
         return "redirect:/author/home";
     }
@@ -47,6 +47,12 @@ public class AuthorController {
         }catch (Exception e){
             redirectAttributes.addFlashAttribute("message", "Author Can't be Deleted");
         }
+        return "redirect:/author/home";
+    }
+
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("authorDto",authorServiceImp.findById(id));
         return "redirect:/author/home";
     }
 

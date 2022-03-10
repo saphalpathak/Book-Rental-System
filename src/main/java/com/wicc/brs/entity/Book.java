@@ -33,7 +33,10 @@ public class Book {
     private Double rating;
 
     @Column(name="stock_count",nullable = false)
-    private Integer stockCount;
+    private Integer totalStock;
+
+    @Column(name = "remaining_stock")
+    private Integer remainingStock;
 
     @Column(name="published_date",nullable = false)
     private Date publishedDate;
@@ -45,7 +48,7 @@ public class Book {
     @JoinColumn(name = "category_id",referencedColumnName = "id" ,foreignKey = @ForeignKey(name = "FK_Book_Category"))
     private Category category;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "book_author",
             joinColumns = @JoinColumn(name = "bid"),
             inverseJoinColumns = @JoinColumn(name = "aid")

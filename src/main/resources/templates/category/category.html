@@ -13,6 +13,9 @@
             <h4 style="text-align: center">Create details</h4>
             <hr/>
             <form th:action="@{~/category/create}" th:method="post" th:object="${categoryDto}">
+                <label>
+                    <input type="text" th:field="*{id}" hidden>
+                </label>
                 <div class="mb-3">
                     <label for="categoryName" class="form-label">Name</label>
                     <input type="text" class="form-control" id="categoryName" th:field="*{name}" placeholder="Book name"
@@ -47,17 +50,14 @@
                 <tr th:each="i ,loop:  ${data}">
                     <th scope="row" th:text="${loop.count}"></th>
                     <td th:text="${i.name}"></td>
-                    <th:block>
-                        <div  style="color:red;">
-                            <td th:text="${i.description}"></td>
-                        </div>
-                    </th:block>
+                    <td th:text="${i.description}"></td>
+
 
                     <td>
                         <a th:href="@{~/category/delete/}+${i.getId()}">
                             <img src="" alt="" th:src="@{/images/bin.png}" style="height: 27px;width: 27px;">
                         </a>
-                        <a th:href="@{~/category/view/}+${i.getId()}">
+                        <a th:href="@{~/category/update/}+${i.getId()}">
                             <img src="" alt="" th:src="@{/images/edit.png}" style="height: 27px;width: 27px;">
                         </a>
                     </td>

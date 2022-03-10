@@ -13,6 +13,9 @@
             <h4 style="text-align: center">Create details</h4>
             <hr/>
             <form th:action="@{/author/create}" th:method="post" th:object="${authorDto}">
+                <label>
+                    <input type="text" th:field="*{id}" hidden>
+                </label>
                 <div class="mb-3">
                     <label for="authorName" class="form-label">Name</label>
                     <input type="text" class="form-control" id="authorName" th:field="*{name}" placeholder="Full Name"
@@ -57,7 +60,7 @@
                         <a th:href="@{~/author/delete/}+${i.getId()}">
                             <img src="" alt="" th:src="@{/images/bin.png}" style="height: 27px;width: 27px;">
                         </a>
-                        <a th:href="@{~/author/view/}+${i.getId()}">
+                        <a th:href="@{~/author/update/}+${i.getId()}">
                             <img src="" alt="" th:src="@{/images/edit.png}" style="height: 27px;width: 27px;">
                         </a>
 

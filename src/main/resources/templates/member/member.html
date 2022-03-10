@@ -13,6 +13,9 @@
             <h4 style="text-align: center">Create details</h4>
             <hr/>
             <form th:action="@{~/member/create}" th:method="post" th:object="${memberDto}">
+                <label>
+                    <input type="text" th:field="*{mid}" hidden>
+                </label>
                 <div class="mb-3">
                     <label for="memberName" class="form-label">Name</label>
                     <input type="text" class="form-control" id="memberName" th:field="*{name}" placeholder="Full Name"
@@ -60,10 +63,10 @@
                     <td th:text="${i.contact}"></td>
                     <td th:text="${i.address}"></td>
                     <td>
-                        <a th:href="'@{~/member/delete/}' +${i.getMid()}">
+                        <a th:href="@{~/member/delete/} + ${i.getMid()}">
                             <img src="" alt="" th:src="@{/images/bin.png}" style="height: 27px;width: 27px;">
                         </a>
-                        <a th:href="'@{~/member/view/}' +${i.getMid()}">
+                        <a th:href="@{~/member/update/} + ${i.getMid()}">
                             <img src="" alt="" th:src="@{/images/edit.png}" style="height: 27px;width: 27px;">
                         </a>
                     </td>

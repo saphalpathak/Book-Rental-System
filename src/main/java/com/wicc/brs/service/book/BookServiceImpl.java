@@ -1,4 +1,5 @@
 package com.wicc.brs.service.book;
+
 import com.wicc.brs.component.FileComponent;
 import com.wicc.brs.dto.BookDto;
 import com.wicc.brs.dto.ResponseDto;
@@ -6,6 +7,7 @@ import com.wicc.brs.entity.Book;
 import com.wicc.brs.repo.BookRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,31 +28,56 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto save(BookDto bookDto) throws ParseException, IOException {
-        ResponseDto responseDto = fileComponent.storeFile(bookDto.getMultipartFile());
-        if(responseDto.isStatus()) {
-                Book book = Book.builder()
+        Book book;
+        if (bookDto.getId() != null && bookDto.getId() != 0) {
+            book = bookRepo.findById(bookDto.getId()).orElseThrow(
+                    () -> new RuntimeException("Invalid Book")
+            );
+            book = Book.builder()
+                    .id(bookDto.getId())
+                    .name(bookDto.getName())
+                    .isbn(bookDto.getIsbn())
+                    .noOfPage(bookDto.getNoOfPage())
+                    .rating(bookDto.getRating())
+                    .totalStock(bookDto.getTotalStock())
+                    .remainingStock(bookDto.getRemainingBook())
+                    .publishedDate((new SimpleDateFormat("yyyy-MM-dd").parse(bookDto.getPublishedDate())))
+                    .filePath(book.getFilePath())
+                    .authors(bookDto.getAuthors())
+                    .category(bookDto.getCategory())
+                    .build();
+            book = bookRepo.save(book);
+            return BookDto.builder().id((book.getId())).build();
+
+        } else {
+            ResponseDto responseDto = fileComponent.storeFile(bookDto.getMultipartFile());
+            if (responseDto.isStatus()) {
+                Book book1 = Book.builder()
                         .id(bookDto.getId())
                         .name(bookDto.getName())
                         .isbn(bookDto.getIsbn())
                         .noOfPage(bookDto.getNoOfPage())
                         .rating(bookDto.getRating())
-                        .stockCount(bookDto.getStockCount())
-                        .publishedDate(new SimpleDateFormat("dd/MM/yyyy").parse(bookDto.getPublishedDate()))
+                        .totalStock(bookDto.getTotalStock())
+                        .remainingStock(bookDto.getTotalStock())
+                        .publishedDate(new SimpleDateFormat("yyyy-MM-dd").parse(bookDto.getPublishedDate()))
                         .filePath(responseDto.getMessage())
                         .authors(bookDto.getAuthors())
                         .category(bookDto.getCategory())
                         .build();
-                book = bookRepo.save(book);
+                book = bookRepo.save(book1);
                 return BookDto.builder().id((book.getId())).build();
-        }else{
+
+            }
             log.error(responseDto.getMessage());
             return null;
         }
 
     }
 
+
     @Override
-    public List<BookDto> findAll(){
+    public List<BookDto> findAll() {
         return bookRepo.findAll().stream().map(book -> {
             try {
                 return BookDto.builder()
@@ -58,8 +85,9 @@ public class BookServiceImpl implements BookService {
                         .name(book.getName())
                         .isbn(book.getIsbn())
                         .noOfPage(book.getNoOfPage())
-                        .stockCount(book.getStockCount())
+                        .totalStock(book.getTotalStock())
                         .rating(book.getRating())
+                        .remainingBook(book.getRemainingStock())
                         .publishedDate(new SimpleDateFormat("yyyy-MM-dd").format(book.getPublishedDate()))
                         .filePath(fileComponent.base64Encoded(book.getFilePath()))
                         .category(book.getCategory())
@@ -77,15 +105,16 @@ public class BookServiceImpl implements BookService {
     public BookDto findById(Integer integer) throws IOException {
         Optional<Book> byId = bookRepo.findById(integer);
         Book book;
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             book = byId.get();
             return BookDto.builder()
                     .id(book.getId())
                     .name(book.getName())
                     .isbn(book.getIsbn())
                     .noOfPage(book.getNoOfPage())
-                    .stockCount(book.getStockCount())
+                    .totalStock(book.getTotalStock())
                     .rating(book.getRating())
+                    .remainingBook(book.getRemainingStock())
                     .publishedDate(new SimpleDateFormat("yyyy-MM-dd").format(book.getPublishedDate()))
                     .filePath(fileComponent.base64Encoded(book.getFilePath()))
                     .category(book.getCategory())
@@ -99,5 +128,28 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBYId(Integer integer) {
         bookRepo.deleteById(integer);
+    }
+
+    @Override
+    public BookDto update(BookDto bookDto) throws IOException, ParseException {
+        ResponseDto responseDto = fileComponent.storeFile(bookDto.getMultipartFile());
+        if (responseDto.isStatus()) {
+            Book book = Book.builder()
+                    .id(bookDto.getId())
+                    .name(bookDto.getName())
+                    .isbn(bookDto.getIsbn())
+                    .noOfPage(bookDto.getNoOfPage())
+                    .rating(bookDto.getRating())
+                    .totalStock(bookDto.getTotalStock())
+                    .publishedDate(new SimpleDateFormat("yyyy-MM-dd").parse(bookDto.getPublishedDate()))
+                    .filePath(responseDto.getMessage())
+                    .authors(bookDto.getAuthors())
+                    .category(bookDto.getCategory())
+                    .build();
+            book = bookRepo.save(book);
+            return BookDto.builder().id((book.getId())).build();
+        }
+        log.info(responseDto.getMessage());
+        return null;
     }
 }

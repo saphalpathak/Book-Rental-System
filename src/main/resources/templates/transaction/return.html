@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:insert="fragments/navbar::navbar(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<section>
+    <h2 style="margin-left: 300px">Return Book</h2>
+    <div style="margin-left: 70px">
+        <hr/>
+        <div class="row" style="margin-left: 70px">
+            <div class="col-md-5" style="align-content: start">
+                <h4  style="align-content: center">Return</h4>
+                <hr/>
+        <form th:action="@{~/return/create}" th:method="post" th:object="${returnDto}">
+            <div class="mb-3">
+                <label for="code" class="form-label">Code</label>
+                <div class="col-sm-8">
+                    <select th:field="*{code}" class="form-label" id="code" required>
+                        <th:block th:each="code : ${codes}">
+                            <option th:text="${code}" th:value="${code}"></option>
+                        </th:block>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="bookData" class="form-label">Member Name</label>
+                <div class="col-sm-8">
+                    <select th:field="*{member}" class="form-label" id="bookData" required>
+                        <th:block th:each="mem : ${memberData}">
+                            <option th:text="${mem.getName()}" th:value="${mem.getMid()}"></option>
+                        </th:block>
+                    </select>
+                </div>
+            </div>
+            <button type="reset" class="btn btn-danger">Reset</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <p th:text="${message}"></p>
+            </div>
+            <div class="col-md-6">
+                <h4 style="text-align: center">Returned Status</h4>
+                <hr/>
+                <table class="table" style="margin-left: 10px" >
+                    <thead>
+                    <tr>
+                        <th scope="col">S.N</th>
+                        <th scope="col">Book</th>
+                        <th scope="col">Code</th>
+                        <th scope="col" >Date of Return</th>
+                        <th scope="col" >Member</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="i ,loop:  ${returnData}">
+                        <th scope="row" th:text="${loop.count}"></th>
+                        <td th:text="${i.getBook().getName()}"></td>
+                        <td th:text="${i.getCode()}"></td>
+                        <td th:text="${#strings.substring(i.getDateOfReturn(),0,10)}"></td>
+                        <td th:text="${i.getMember().getName()}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

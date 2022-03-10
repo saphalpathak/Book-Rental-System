@@ -2,21 +2,17 @@ package com.wicc.brs.dto;
 
 import com.wicc.brs.entity.Author;
 import com.wicc.brs.entity.Category;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class BookDto {
     private Integer id;
 
@@ -28,7 +24,7 @@ public class BookDto {
 
     private Double rating;
 
-    private Integer stockCount;
+    private Integer totalStock;
 
     private String publishedDate;
 
@@ -37,6 +33,8 @@ public class BookDto {
     private String filePath;
 
     private Category category;
+
+    private Integer remainingBook;
 
     private List<Author> authors;
 

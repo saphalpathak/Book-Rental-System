@@ -6,14 +6,12 @@
 </head>
 <body>
 <section>
-    <h2 style="margin-left: 300px">Book Details</h2>
+    <a th:href="@{/book/back}"><button class="btn btn-primary" style="margin-left: 50px">Back</button></a>
+    <h1 style="text-align: center">Book Update</h1>
     <hr/>
-    <div class="row" style="margin-left: 70px">
-        <div class="col-md-5">
-            <h4 style="text-align: center">Create details</h4>
+    <div class="row" style="margin-left: 70px;padding: 0 200px 200px 200px">
             <hr/>
-            <p th:text="${message}"></p>
-            <form th:action="@{/book/create}" th:method="post" th:object="${bookDto}" enctype="multipart/form-data">
+            <form th:action="@{/book/update}" th:method="post" th:object="${bookDto}" enctype="multipart/form-data">
                 <label>
                     <input type="text" th:field="*{id}" hidden>
                 </label>
@@ -43,8 +41,8 @@
                 </div>
                 <div class="mb-3">
                     <label for="bookDate" class="form-label">Published Date</label>
-                    <input type="date" class="form-control" th:field="*{publishedDate}" id="bookDate"
-                           placeholder="YYYY-MM-DD" required>
+                    <input type="text" class="form-control" th:field="*{publishedDate}" id="bookDate"
+                           placeholder="Published Date(dd-mm-yyyy)" required>
                 </div>
                 <div class="mb-3">
                     <label for="photo" class="form-label">Photo</label>
@@ -59,7 +57,7 @@
                             </th:block>
                         </select>
                     </div>
-                    </div>
+                </div>
                 <div class="mb-3">
                     <label for="bookAuthor" class="form-label">Author</label>
                     <div class="col-sm-8">
@@ -69,50 +67,12 @@
                             </th:block>
                         </select>
                     </div>
-                    </div>
+                </div>
                 <button type="reset" class="btn btn-danger">Reset</button>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
+            <p th:text="${message}"></p>
         </div>
-        <div class="col-md-6">
-            <h4 style="text-align: center">Details</h4>
-            <hr/>
-            <table class="table" style="margin-left: 10px" >
-                <thead>
-                <tr>
-                    <th scope="col">S.N</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">noOfPage</th>
-                    <th scope="col">isbn</th>
-                    <th scope="col">rating</th>
-                    <th scope="col">stockCount</th>
-                    <th scope="col">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="i ,loop:  ${data}">
-                    <th scope="row" th:text="${loop.count}"></th>
-                    <td th:text="${i.name}"></td>
-                    <td th:text="${i.noOfPage}"></td>
-                    <td th:text="${i.isbn}"></td>
-                    <td th:text="${i.rating}"></td>
-                    <td th:text="${i.getTotalStock}"></td>
-                    <td>
-                        <a th:href="@{~/book/view/}+${i.getId()}">
-                            <img src="" alt="" th:src="@{/images/view.png}" style="height: 27px;width: 27px;">
-                        </a>
-                        <a th:href="@{~/book/delete/}+${i.getId()}">
-                            <img src="" alt="" th:src="@{/images/bin.png}" style="height: 27px;width: 27px;">
-                        </a>
-                        <a th:href="@{~/book/update/}+${i.getId()}">
-                            <img src="" alt="" th:src="@{/images/edit.png}" style="height: 27px;width: 27px;">
-                        </a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 </section>
 </body>
 </html>

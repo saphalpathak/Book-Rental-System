@@ -20,7 +20,9 @@ public class CategoryController {
 
     @GetMapping("/home")
     public String getHome(Model model) {
-        model.addAttribute("categoryDto", new CategoryDto());
+        if(model.getAttribute("categoryDto") == null){
+            model.addAttribute("categoryDto", new CategoryDto());
+        }
         model.addAttribute("data",categoryService.findAll());
         return "/category/category";
     }
@@ -28,12 +30,10 @@ public class CategoryController {
     public String create(@ModelAttribute CategoryDto categoryDto, RedirectAttributes redirectAttributes) {
         try {
             categoryDto= categoryService.save(categoryDto);
+            redirectAttributes.addFlashAttribute("message", "Done");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "Category creation failed.");
+            redirectAttributes.addFlashAttribute("message", "Failed.");
             return "redirect:/category/home";
-        }
-        if(categoryDto!=null){
-            redirectAttributes.addFlashAttribute("message", "Category creation successful.");
         }
         return "redirect:/category/home";
     }
@@ -48,5 +48,12 @@ public class CategoryController {
         }
         return "redirect:/category/home";
     }
+
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("categoryDto",categoryService.findById(id));
+        return "redirect:/category/home";
+    }
+
 
 }
