@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:insert="fragments/navbar::navbar(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<section>
+    <h2 style="margin-left: 350px">Transaction Log</h2>
+    <div style="margin-left: 70px">
+        <hr/>
+                <table class="table" style="margin-left: 10px" >
+                    <thead>
+                    <tr>
+                        <th scope="col">S.N</th>
+                        <th scope="col">Book</th>
+                        <th scope="col">Code</th>
+                        <th scope="col" >Member</th>
+                        <th scope="col" >Rented Date</th>
+                        <th scope="col" >Returned Date</th>
+                        <th scope="col" >Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="i ,loop:  ${log}">
+                        <th scope="row" th:text="${loop.count}"></th>
+                        <td th:text="${i.getBook().getName()}"></td>
+                        <td th:text="${i.getCode()}"></td>
+                        <td th:text="${i.getMember().getName()}"></td>
+                        <td th:text="${#strings.substring(i.getFromDate(),0,10)}"></td>
+                        <td>
+                            <span th:if="${i.getDateOfReturn()!=null}"
+                                  th:text="${#strings.substring(i.getDateOfReturn(),0,10)}"></span>
+                            <span th:unless="${i.getDateOfReturn()!=null}">Not Returned</span>
+                        </td>
+                        <td th:text="${i.getRentStatus().name()}"></td>
+
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+</section>
+</body>
+</html>
