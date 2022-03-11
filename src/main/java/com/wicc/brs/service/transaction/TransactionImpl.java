@@ -71,7 +71,7 @@ public class TransactionImpl {
             }
         }
         if (transaction1 == null) {
-            return RentDto.builder().code("Book is not rented!!").build();
+            return RentDto.builder().code("Book is not rented by "+returnDto.getMember().getName()).build();
         }
         BookDto byId = bookService.findById(transaction1.getBook().getId());
         Integer remainingBook = byId.getRemainingBook();

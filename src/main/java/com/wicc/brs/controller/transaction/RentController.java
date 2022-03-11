@@ -62,7 +62,7 @@ public class RentController {
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("status",
-                    "Failed!! Out of stock");
+                    "Failed!!");
         }
         return "redirect:/rent/home";
     }

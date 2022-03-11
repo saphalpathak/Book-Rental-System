@@ -6,9 +6,11 @@ import com.wicc.brs.service.book.BookService;
 import com.wicc.brs.service.category.CategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 @Controller
@@ -34,16 +36,23 @@ public class BookController {
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute BookDto bookDto, RedirectAttributes redirectAttributes) {
-        try {
-            bookDto = bookService.save(bookDto);
-            redirectAttributes.addFlashAttribute("message", "Book created successfully");
+    public String create(@Valid @ModelAttribute BookDto bookDto, BindingResult bindingResult,
+                         Model model) {
+        if (!bindingResult.hasErrors()) {
+            try {
+                bookDto = bookService.save(bookDto);
+                model.addAttribute("message", "Book created successfully");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "Book creation failed");
+            } catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("message", "Book creation failed");
+            }
         }
-        return "redirect:/book/home";
+        model.addAttribute("bookDto", bookDto);
+        model.addAttribute("data", bookService.findAll());
+        model.addAttribute("categoryData", categoryService.findAll());
+        model.addAttribute("authorData", authorService.findAll());
+        return "/book/book";
     }
 
     @GetMapping("/view/{id}")
@@ -75,15 +84,22 @@ public class BookController {
     }
 
     @PostMapping("/update")
-    public String update(BookDto bookDto, RedirectAttributes redirectAttributes) {
-        try {
-            bookDto = bookService.update(bookDto);
-            redirectAttributes.addFlashAttribute("message", "Update successfully");
+    public String update(@Valid @ModelAttribute BookDto bookDto, BindingResult bindingResult,
+                         Model model) {
+        if (!bindingResult.hasErrors()) {
+            try {
+                bookDto = bookService.update(bookDto);
+                model.addAttribute("message", "Update successfully");
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "Failed");
+            } catch (Exception e) {
+                e.printStackTrace();
+                model.addAttribute("message", "Failed");
+            }
         }
-        return "redirect:/book/home";
+        model.addAttribute("bookDto", new BookDto());
+        model.addAttribute("data", bookService.findAll());
+        model.addAttribute("categoryData", categoryService.findAll());
+        model.addAttribute("authorData", authorService.findAll());
+        return "/book/book";
     }
 }

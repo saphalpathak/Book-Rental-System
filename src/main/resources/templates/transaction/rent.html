@@ -16,12 +16,14 @@
                 <form th:action="@{~/rent/create}" th:method="post" th:object="${rentDto}">
                     <div class="mb-3">
                         <label for="bookCode" class="form-label">Code</label>
-                        <input type="text" class="form-control" id="bookCode" th:field="*{code}" placeholder="Code">
+                        <input type="text" class="form-control" id="bookCode" th:field="*{code}" placeholder="Code" required>
+
                     </div>
                     <div class="mb-3">
                         <label for="noOfDays" class="form-label">No of days</label>
                         <input type="text" class="form-control" th:field="*{noOfDays}" id="noOfDays"
-                               placeholder="No of days">
+                               placeholder="No of days" required>
+
                     </div>
                     <div class="mb-3">
                         <label for="bookData" class="form-label">Book</label>

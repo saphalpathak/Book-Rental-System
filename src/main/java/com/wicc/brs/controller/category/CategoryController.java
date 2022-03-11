@@ -4,8 +4,11 @@ import com.wicc.brs.dto.CategoryDto;
 import com.wicc.brs.service.category.CategoryServiceImp;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/category")
@@ -20,22 +23,27 @@ public class CategoryController {
 
     @GetMapping("/home")
     public String getHome(Model model) {
-        if(model.getAttribute("categoryDto") == null){
+        if (model.getAttribute("categoryDto") == null) {
             model.addAttribute("categoryDto", new CategoryDto());
         }
-        model.addAttribute("data",categoryService.findAll());
+        model.addAttribute("data", categoryService.findAll());
         return "/category/category";
     }
+
     @PostMapping("/create")
-    public String create(@ModelAttribute CategoryDto categoryDto, RedirectAttributes redirectAttributes) {
-        try {
-            categoryDto= categoryService.save(categoryDto);
-            redirectAttributes.addFlashAttribute("message", "Done");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "Failed.");
-            return "redirect:/category/home";
+    public String create(@Valid @ModelAttribute CategoryDto categoryDto, BindingResult bindingResult,
+                         Model model) {
+        if (!bindingResult.hasErrors()) {
+            try {
+                categoryDto = categoryService.save(categoryDto);
+                model.addAttribute("message", "Done");
+            } catch (Exception e) {
+                model.addAttribute("message", "Failed.");
+            }
         }
-        return "redirect:/category/home";
+        model.addAttribute("categoryDto", categoryDto);
+        model.addAttribute("data", categoryService.findAll());
+        return "/category/category";
     }
 
     @GetMapping("/delete/{id}")
@@ -43,15 +51,15 @@ public class CategoryController {
         try {
             categoryService.deleteBYId(integer);
             redirectAttributes.addFlashAttribute("message", "Category Deleted");
-        }catch (Exception e){
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", "Category Can't be Deleted");
         }
         return "redirect:/category/home";
     }
 
     @GetMapping("/update/{id}")
-    public String update(@PathVariable Integer id, RedirectAttributes redirectAttributes){
-        redirectAttributes.addFlashAttribute("categoryDto",categoryService.findById(id));
+    public String update(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("categoryDto", categoryService.findById(id));
         return "redirect:/category/home";
     }
 

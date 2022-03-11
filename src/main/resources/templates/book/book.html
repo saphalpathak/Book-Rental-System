@@ -20,40 +20,53 @@
                 <div class="mb-3">
                     <label for="bookName" class="form-label">Name</label>
                     <input type="text" class="form-control" id="bookName" th:field="*{name}" placeholder="Book Name"
-                           required>
+                    >
+                    <p class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+
                 </div>
                 <div class="mb-3">
                     <label for="boOfPage" class="form-label">No.Of page</label>
-                    <input type="text" class="form-control" th:field="*{noOfPage}" id="boOfPage" placeholder="No.Of page" required>
+                    <input type="text" class="form-control" th:field="*{noOfPage}" id="boOfPage" placeholder="No.Of page">
+                    <p class="error" th:if="${#fields.hasErrors('noOfPage')}" th:errors="*{noOfPage}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="bookIsbn" class="form-label">Isbn</label>
                     <input type="text" class="form-control" th:field="*{isbn}" id="bookIsbn"
-                           placeholder="Isbn" required>
+                           placeholder="Isbn">
+                    <p class="error" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></p>
+
                 </div>
                 <div class="mb-3">
                     <label for="bookRating" class="form-label">Rating</label>
                     <input type="text" class="form-control" th:field="*{rating}" id="bookRating"
-                           placeholder="Rating" required>
+                           placeholder="Rating">
+                    <p class="error" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></p>
+
                 </div>
                 <div class="mb-3">
                     <label for="bookStock" class="form-label">Stock Count</label>
                     <input type="text" class="form-control" th:field="*{totalStock}" id="bookStock"
-                           placeholder="Stock Count" required>
+                           placeholder="Stock Count">
+                    <p class="error" th:if="${#fields.hasErrors('totalStock')}" th:errors="*{totalStock}"></p>
+
                 </div>
                 <div class="mb-3">
                     <label for="bookDate" class="form-label">Published Date</label>
                     <input type="date" class="form-control" th:field="*{publishedDate}" id="bookDate"
-                           placeholder="YYYY-MM-DD" required>
+                           placeholder="YYYY-MM-DD">
+                    <p class="error" th:if="${#fields.hasErrors('publishedDate')}" th:errors="*{publishedDate}"></p>
+
                 </div>
                 <div class="mb-3">
                     <label for="photo" class="form-label">Photo</label>
-                    <input type="file" class="form-control" th:field="*{multipartFile}" id="photo" required>
+                    <input type="file" class="form-control" th:field="*{multipartFile}" id="photo">
+                    <p class="error" th:if="${#fields.hasErrors('multipartFile')}" th:errors="*{multipartFile}"></p>
+
                 </div>
                 <div class="mb-3">
                     <label for="bookCategory" class="form-label">Category</label>
                     <div class="col-sm-8">
-                        <select th:field="*{category}" class="form-label" id="bookCategory" required>
+                        <select th:field="*{category}" class="form-label" id="bookCategory">
                             <th:block th:each="cat : ${categoryData}">
                                 <option th:text="${cat.getName()}" th:value="${cat.getId()}"></option>
                             </th:block>
@@ -63,11 +76,12 @@
                 <div class="mb-3">
                     <label for="bookAuthor" class="form-label">Author</label>
                     <div class="col-sm-8">
-                        <select th:field="*{authors}" class="form-label" id="bookAuthor" multiple required>
+                        <select th:field="*{authors}" class="form-label" id="bookAuthor" multiple>
                             <th:block th:each="aut : ${authorData}">
                                 <option th:text="${aut.getName()}" th:value="${aut.getId()}"></option>
                             </th:block>
                         </select>
+
                     </div>
                     </div>
                 <button type="reset" class="btn btn-danger">Reset</button>
@@ -82,7 +96,7 @@
                 <tr>
                     <th scope="col">S.N</th>
                     <th scope="col">Name</th>
-                    <th scope="col">No Of Page</th>
+                    <th scope="col">Pages</th>
                     <th scope="col">Isbn</th>
                     <th scope="col">Rating</th>
                     <th scope="col">Stock</th>

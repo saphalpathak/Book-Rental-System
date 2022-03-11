@@ -3,8 +3,11 @@ import com.wicc.brs.dto.AuthorDto;
 import com.wicc.brs.service.author.AuthorServiceImp;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/author")
@@ -27,15 +30,19 @@ public class AuthorController {
     }
 
     @PostMapping("/create")
-    public String create( @ModelAttribute("authorDto") AuthorDto authorDto, RedirectAttributes redirectAttributes){
-        try {
-            authorDto = authorServiceImp.save(authorDto);
-            redirectAttributes.addFlashAttribute("message","Done");
+    public String create(@Valid @ModelAttribute("authorDto") AuthorDto authorDto, BindingResult bindingResult,
+                         Model model){
+        if(!bindingResult.hasErrors()) {
+            try {
+                authorDto = authorServiceImp.save(authorDto);
+                model.addAttribute("message", "Done");
+            } catch (Exception e) {
+                model.addAttribute("message", "Failed");
+            }
         }
-        catch (Exception e){
-            redirectAttributes.addFlashAttribute("message","Failed");
-        }
-        return "redirect:/author/home";
+        model.addAttribute("authorDto",authorDto);
+        model.addAttribute("data",authorServiceImp.findAll());
+        return "/author/author";
     }
 
     @GetMapping("/delete/{id}")

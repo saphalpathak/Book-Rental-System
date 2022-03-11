@@ -19,17 +19,21 @@
                 <div class="mb-3">
                     <label for="authorName" class="form-label">Name</label>
                     <input type="text" class="form-control" id="authorName" th:field="*{name}" placeholder="Full Name"
-                           aria-describedby="emailHelp" required>
-<!--                    <span th:if="${#fields.hasErrors('name')}" th:text="*{name}" ></span>-->
+                           aria-describedby="emailHelp">
+                    <p class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="authorEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" th:field="*{email}" id="authorEmail" placeholder="Email" required>
+                    <input type="email" class="form-control" th:field="*{email}" id="authorEmail" placeholder="Email">
+                    <p class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+
                 </div>
                 <div class="mb-3">
                     <label for="authorPhone" class="form-label">Contact</label>
                     <input type="text" class="form-control" th:field="*{contact}" id="authorPhone"
-                           placeholder="Contact Number" required>
+                           placeholder="Contact Number">
+                    <p class="error" th:if="${#fields.hasErrors('contact')}" th:errors="*{contact}"></p>
+
                 </div>
                 <button type="reset" class="btn btn-danger">Reset</button>
                 <button type="submit" class="btn btn-primary">Submit</button>
