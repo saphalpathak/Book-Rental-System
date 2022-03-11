@@ -1,4 +1,5 @@
 package com.wicc.brs.service.transaction;
+
 import com.wicc.brs.dto.BookDto;
 import com.wicc.brs.dto.RentDto;
 import com.wicc.brs.dto.ReturnDto;
@@ -20,17 +21,19 @@ import java.util.Objects;
 
 @Service
 @Slf4j
-public class TransactionImpl{
+public class TransactionImpl {
     private final TransactionRepo transactionRepo;
     private final BookService bookService;
+
     public TransactionImpl(TransactionRepo transactionRepo, BookService bookService) {
         this.transactionRepo = transactionRepo;
         this.bookService = bookService;
     }
+
     public RentDto rentBook(RentDto rentDto) throws ParseException, IOException {
         BookDto byId = bookService.findById(rentDto.getBook().getId());
         Integer stock = byId.getRemainingBook();
-        if(stock>0) {
+        if (stock > 0) {
             LocalDate localDate = LocalDate.now().plusDays(rentDto.getNoOfDays());
             Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
@@ -55,23 +58,24 @@ public class TransactionImpl{
         }
         return null;
     }
+
     public RentDto returnBook(ReturnDto returnDto) throws ParseException, IOException {
         List<Transaction> all = transactionRepo.findAll();
-        Transaction transaction1=null;
-        for(Transaction transaction : all){
-            if(Objects.equals(transaction.getCode(), returnDto.getCode()) &&
-                    Objects.equals(transaction.getMember().getMid(),returnDto.getMember().getMid())&&
-            transaction.getRentStatus()==RentStatus.RENT){
+        Transaction transaction1 = null;
+        for (Transaction transaction : all) {
+            if (Objects.equals(transaction.getCode(), returnDto.getCode()) &&
+                    Objects.equals(transaction.getMember().getMid(), returnDto.getMember().getMid()) &&
+                    transaction.getRentStatus() == RentStatus.RENT) {
                 transaction1 = transaction;
                 break;
             }
         }
-        if(transaction1==null){
-            return RentDto.builder().code("Member not matched").build();
+        if (transaction1 == null) {
+            return RentDto.builder().code("Book is not rented!!").build();
         }
         BookDto byId = bookService.findById(transaction1.getBook().getId());
         Integer remainingBook = byId.getRemainingBook();
-        if(remainingBook<byId.getTotalStock()){
+        if (remainingBook < byId.getTotalStock()) {
             transaction1.setRentStatus(RentStatus.RETURN);
             transaction1.setDateOfReturn((new SimpleDateFormat("yyyy-MM-dd")
                     .parse(new SimpleDateFormat("yyyy-MM-dd")
@@ -84,7 +88,8 @@ public class TransactionImpl{
         return RentDto.builder().code("Book Already Returned").build();
 
     }
-    public List<Transaction> findAll(){
+
+    public List<Transaction> findAll() {
         return transactionRepo.findAll();
     }
 }

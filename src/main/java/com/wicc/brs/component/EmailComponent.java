@@ -11,7 +11,7 @@ public class EmailComponent {
             Email email = new SimpleEmail();
             email.setHostName("smtp.googlemail.com");
             email.setSmtpPort(465);
-            email.setAuthentication("saphalpathak35@gmail.com","lvckyvaukxeflbmx");
+            email.setAuthentication("saphalpathak35@gmail.com","jfuufbexzmxjxvzv");
             email.setSSL(true);
             email.setFrom("saphalpathak35@gmail.com");
             email.setSubject(subject);

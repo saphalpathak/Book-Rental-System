@@ -23,41 +23,40 @@ import java.util.stream.Stream;
 @Controller
 @RequestMapping("/return")
 public class ReturnController {
-
-    private final BookService bookService;
     private final MemberService memberService;
     private final TransactionImpl transaction;
 
-    public ReturnController(BookService bookService, MemberService memberService, TransactionImpl transaction) {
-        this.bookService = bookService;
+    public ReturnController(MemberService memberService, TransactionImpl transaction) {
         this.memberService = memberService;
         this.transaction = transaction;
     }
 
     @GetMapping("/home")
-    public String getHome(Model model){
+    public String getHome(Model model) {
         model.addAttribute("returnDto", new ReturnDto());
-        model.addAttribute("memberData",memberService.findAll());
+        model.addAttribute("memberData", memberService.findAll());
         Set<String> code = new HashSet<>();
         List<Transaction> all = transaction.findAll();
-        for(Transaction transaction : all){
-            code.add(transaction.getCode());
+        for (Transaction transaction : all) {
+            if (transaction.getRentStatus() == RentStatus.RENT) {
+                code.add(transaction.getCode());
+            }
         }
         List<Transaction> collect = all.stream()
                 .filter(transaction1 -> transaction1.getRentStatus() == RentStatus.RETURN).collect(Collectors.toList());
-        model.addAttribute("codes",code);
-        model.addAttribute("returnData",collect);
+        model.addAttribute("codes", code);
+        model.addAttribute("returnData", collect);
         return "transaction/return";
     }
 
     @PostMapping("/create")
-    public String returnBook(ReturnDto returnDto, RedirectAttributes redirectAttributes){
-        try{
+    public String returnBook(ReturnDto returnDto, RedirectAttributes redirectAttributes) {
+        try {
             RentDto rentDto = transaction.returnBook(returnDto);
-            redirectAttributes.addFlashAttribute("message",rentDto.getCode());
+            redirectAttributes.addFlashAttribute("message", rentDto.getCode());
         } catch (ParseException | IOException e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("message","Failed");
+            redirectAttributes.addFlashAttribute("message", "Failed");
         }
         return "redirect:/return/home";
     }
