@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 
 @Controller
@@ -64,7 +65,12 @@ public class BookController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public String delete(@PathVariable Integer id) throws IOException {
+        BookDto byId = bookService.findById(id);
+        File file = new File(byId.getFilePath());
+        if(file.exists()){
+            file.delete();
+        }
         bookService.deleteBYId(id);
         return "redirect:/book/home";
     }
@@ -93,7 +99,7 @@ public class BookController {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                model.addAttribute("message", "Failed");
+                model.addAttribute("message", "Update Failed");
             }
         }
         model.addAttribute("bookDto", new BookDto());
