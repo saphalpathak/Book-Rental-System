@@ -15,6 +15,7 @@ public class Log {
         this.transaction = transaction;
     }
 
+    // all transactions
     @GetMapping("/log")
     public String log(Model model){
         model.addAttribute("log",transaction.findAll());

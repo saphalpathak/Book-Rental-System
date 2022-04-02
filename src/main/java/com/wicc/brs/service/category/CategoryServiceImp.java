@@ -20,6 +20,7 @@ public class CategoryServiceImp implements CategoryService{
     }
 
 
+    //save new category
     @Override
     public CategoryDto save(CategoryDto categoryDto) {
         Category category = Category.builder()
@@ -31,6 +32,7 @@ public class CategoryServiceImp implements CategoryService{
         return CategoryDto.builder().id((save.getId())).build();
     }
 
+    //finding all the category
     @Override
     public List<CategoryDto> findAll() {
        return  categoryRepo.findAll().stream().map(category -> CategoryDto.builder()
@@ -40,6 +42,7 @@ public class CategoryServiceImp implements CategoryService{
                     .build()).collect(Collectors.toList());
     }
 
+    //finding category by id
     @Override
     public CategoryDto findById(Integer integer) {
         Optional<Category> byId = categoryRepo.findById(integer);
@@ -56,6 +59,7 @@ public class CategoryServiceImp implements CategoryService{
         return null;
     }
 
+    //deleting category by id
     @Override
     public void deleteBYId(Integer integer) {
         categoryRepo.deleteById(integer);

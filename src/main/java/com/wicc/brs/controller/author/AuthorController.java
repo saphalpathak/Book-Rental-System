@@ -20,6 +20,7 @@ public class AuthorController {
     }
 
 
+    //sending data to home page
     @GetMapping("/home")
     public String homeAuthor(Model model){
         if(model.getAttribute("authorDto") ==null) {
@@ -29,9 +30,11 @@ public class AuthorController {
         return "/author/author";
     }
 
+    //create new author
     @PostMapping("/create")
     public String create(@Valid @ModelAttribute("authorDto") AuthorDto authorDto, BindingResult bindingResult,
                          Model model){
+        //if binding results has no error, save the author
         if(!bindingResult.hasErrors()) {
             try {
                 authorDto = authorServiceImp.save(authorDto);
@@ -45,6 +48,7 @@ public class AuthorController {
         return "/author/author";
     }
 
+    //delete user by id
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer integer,RedirectAttributes redirectAttributes) {
         try {
@@ -56,6 +60,7 @@ public class AuthorController {
         return "redirect:/author/home";
     }
 
+    //update the user
     @GetMapping("/update/{id}")
     public String update(@PathVariable Integer id, RedirectAttributes redirectAttributes){
         redirectAttributes.addFlashAttribute("authorDto",authorServiceImp.findById(id));

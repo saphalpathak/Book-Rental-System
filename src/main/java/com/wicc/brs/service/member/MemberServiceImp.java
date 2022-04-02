@@ -17,7 +17,7 @@ public class MemberServiceImp implements MemberService{
         this.memberRepo = memberRepo;
     }
 
-
+    //saving the member
     @Override
     public MemberDto save(MemberDto memberDto) {
         Member member = Member.builder()
@@ -33,6 +33,7 @@ public class MemberServiceImp implements MemberService{
         .build();
     }
 
+    //finding all the member
     @Override
     public List<MemberDto> findAll() {
         return memberRepo.findAll().stream().map(member-> MemberDto.builder()
@@ -44,6 +45,7 @@ public class MemberServiceImp implements MemberService{
                 .build()).collect(Collectors.toList());
     }
 
+    //finding member by id
     @Override
     public MemberDto findById(Integer integer) {
         Optional<Member> byId = memberRepo.findById(integer);
@@ -60,6 +62,7 @@ public class MemberServiceImp implements MemberService{
         return null;
     }
 
+    //delete member by id
     @Override
     public void deleteBYId(Integer integer) {
         memberRepo.deleteById(integer);

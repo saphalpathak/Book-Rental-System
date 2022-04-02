@@ -27,6 +27,7 @@ public class BookController {
         this.authorService = authorService;
     }
 
+    //sending required data to home of book page
     @GetMapping("/home")
     public String getBook(Model model) {
         model.addAttribute("bookDto", new BookDto());
@@ -36,6 +37,7 @@ public class BookController {
         return "/book/book";
     }
 
+    //create a new book
     @PostMapping("/create")
     public String create(@Valid @ModelAttribute BookDto bookDto, BindingResult bindingResult,
                          Model model) {
@@ -56,6 +58,7 @@ public class BookController {
         return "/book/book";
     }
 
+    //find book by id
     @GetMapping("/view/{id}")
     public String view(@PathVariable("id") Integer integer, Model model) throws IOException {
         model.addAttribute("bookData", bookService.findById(integer));
@@ -64,6 +67,7 @@ public class BookController {
         return "/book/book_details";
     }
 
+    //delete book by id
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable Integer id) throws IOException {
         BookDto byId = bookService.findById(id);
@@ -81,6 +85,7 @@ public class BookController {
     }
 
 
+    //update user by id
     @GetMapping("/update/{id}")
     public String update(@PathVariable Integer id, Model model) throws IOException {
         model.addAttribute("bookDto", bookService.findById(id));
@@ -89,6 +94,7 @@ public class BookController {
         return "book/book_update";
     }
 
+    //getting the update data and save to database if data is correct
     @PostMapping("/update")
     public String update(@Valid @ModelAttribute BookDto bookDto, BindingResult bindingResult,
                          Model model) {

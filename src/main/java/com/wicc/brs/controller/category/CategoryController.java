@@ -21,6 +21,7 @@ public class CategoryController {
     }
 
 
+    //sending data to home page of category
     @GetMapping("/home")
     public String getHome(Model model) {
         if (model.getAttribute("categoryDto") == null) {
@@ -30,9 +31,11 @@ public class CategoryController {
         return "/category/category";
     }
 
+    //creating new category
     @PostMapping("/create")
     public String create(@Valid @ModelAttribute CategoryDto categoryDto, BindingResult bindingResult,
                          Model model) {
+        //if input is correct save category
         if (!bindingResult.hasErrors()) {
             try {
                 categoryDto = categoryService.save(categoryDto);
@@ -46,6 +49,7 @@ public class CategoryController {
         return "/category/category";
     }
 
+    //delete category by id
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer integer, RedirectAttributes redirectAttributes) {
         try {
@@ -57,6 +61,7 @@ public class CategoryController {
         return "redirect:/category/home";
     }
 
+    //update category by id
     @GetMapping("/update/{id}")
     public String update(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("categoryDto", categoryService.findById(id));

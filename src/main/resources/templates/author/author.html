@@ -13,9 +13,6 @@
             <h4 style="text-align: center">Create details</h4>
             <hr/>
             <form th:action="@{/author/create}" th:method="post" th:object="${authorDto}">
-                <label>
-                    <input type="text" th:field="*{id}" hidden>
-                </label>
                 <div class="mb-3">
                     <label for="authorName" class="form-label">Name</label>
                     <input type="text" class="form-control" id="authorName" th:field="*{name}" placeholder="Full Name"
@@ -44,7 +41,7 @@
         <div class="col-md-6">
             <h4 style="text-align: center">Details</h4>
             <hr/>
-            <table class="table" style="margin-left: 10px" >
+            <table class="table" style="margin-left: 10px">
                 <thead>
                 <tr>
                     <th scope="col">S.N</th>

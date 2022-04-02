@@ -31,6 +31,7 @@ public class ReturnController {
         this.transaction = transaction;
     }
 
+    //sending required data to return page
     @GetMapping("/home")
     public String getHome(Model model) {
         model.addAttribute("returnDto", new ReturnDto());
@@ -42,6 +43,7 @@ public class ReturnController {
                 code.add(transaction.getCode());
             }
         }
+        //all the rrturned books
         List<Transaction> collect = all.stream()
                 .filter(transaction1 -> transaction1.getRentStatus() == RentStatus.RETURN).collect(Collectors.toList());
         model.addAttribute("codes", code);
@@ -49,12 +51,15 @@ public class ReturnController {
         return "transaction/return";
     }
 
+    //return book
     @PostMapping("/create")
     public String returnBook(ReturnDto returnDto, RedirectAttributes redirectAttributes) {
         try {
+            //if return successful
             RentDto rentDto = transaction.returnBook(returnDto);
             redirectAttributes.addFlashAttribute("message", rentDto.getCode());
         } catch (ParseException | IOException e) {
+            //if book return failed
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("message", "Failed");
         }

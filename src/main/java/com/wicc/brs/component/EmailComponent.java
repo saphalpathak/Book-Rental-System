@@ -4,6 +4,7 @@ import org.apache.commons.mail.Email;
 import org.apache.commons.mail.SimpleEmail;
 import org.springframework.stereotype.Component;
 
+//sending email component
 @Component
 public class EmailComponent {
     public void send(String receiver,String subject,String message){
@@ -11,9 +12,9 @@ public class EmailComponent {
             Email email = new SimpleEmail();
             email.setHostName("smtp.googlemail.com");
             email.setSmtpPort(465);
-            email.setAuthentication("saphalpathak35@gmail.com","jfuufbexzmxjxvzv");
+            email.setAuthentication("pemapathak2000@gmail.com","prihovplawjkzfug");
             email.setSSL(true);
-            email.setFrom("saphalpathak35@gmail.com");
+            email.setFrom("pemapathak2000@gmail.com");
             email.setSubject(subject);
             email.setMsg(message);
             email.addTo(receiver);

@@ -19,8 +19,10 @@ public class AuthorServiceImp implements AuthorService {
         this.emailComponent = emailComponent;
     }
 
+    //save and update author
     @Override
     public AuthorDto save(AuthorDto authorDto) {
+        //if authorDto.getId() == null author data is new
         boolean status = authorDto.getId() == null;
         Author author = Author.builder()
                 .id(authorDto.getId())
@@ -29,11 +31,13 @@ public class AuthorServiceImp implements AuthorService {
                 .contact(authorDto.getContact())
                 .build();
         author = authorRepo.save(author);
+        //if status is true author is new
         if (status) {
             emailComponent.send(author.getEmail(),
                     "Author Registration",
                     "You are added as a author in Book Rental System");
         }
+        //if status is false author wants to update his/her data
         else {
             emailComponent.send(author.getEmail(),
                     "Update Author",
@@ -44,6 +48,7 @@ public class AuthorServiceImp implements AuthorService {
 
     }
 
+    //finding all the authors
     @Override
     public List<AuthorDto> findAll() {
         return authorRepo.findAll().stream().map(author -> AuthorDto.builder()
@@ -54,10 +59,12 @@ public class AuthorServiceImp implements AuthorService {
                 .build()).collect(Collectors.toList());
     }
 
+    //finding author by id
     @Override
     public AuthorDto findById(Integer integer) {
         Optional<Author> byId = authorRepo.findById(integer);
         Author author;
+        //find by id return optional so, if  value is present getting it
         if (byId.isPresent()) {
             author = byId.get();
             return AuthorDto.builder()
@@ -71,6 +78,7 @@ public class AuthorServiceImp implements AuthorService {
         return null;
     }
 
+    //delete author by id
     @Override
     public void deleteBYId(Integer integer) {
         authorRepo.deleteById(integer);

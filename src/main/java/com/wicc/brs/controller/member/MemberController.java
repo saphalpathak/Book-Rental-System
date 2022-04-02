@@ -21,6 +21,7 @@ public class MemberController {
         this.memberService = memberService;
     }
 
+    //sending required data to home page of member
     @GetMapping("/home")
     public String homeMember(Model model) {
         if (model.getAttribute("memberDto") == null) {
@@ -30,9 +31,11 @@ public class MemberController {
         return "/member/member";
     }
 
+    //creating new member
     @PostMapping("/create")
     public String createMember(@Valid @ModelAttribute MemberDto memberDto, BindingResult bindingResult,
                                Model model) {
+        //if all input is correct save member to database
         if (!bindingResult.hasErrors()) {
             try {
                 memberDto = memberService.save(memberDto);
@@ -47,6 +50,7 @@ public class MemberController {
 
     }
 
+    //delte member by id
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer integer, RedirectAttributes redirectAttributes) {
         try {
@@ -58,6 +62,7 @@ public class MemberController {
         return "redirect:/member/home";
     }
 
+    //update member
     @GetMapping("/update/{mid}")
     public String update(@PathVariable Integer mid, RedirectAttributes redirectAttributes) throws IOException {
         redirectAttributes.addFlashAttribute("memberDto", memberService.findById(mid));
